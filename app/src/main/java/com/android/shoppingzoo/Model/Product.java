@@ -114,18 +114,22 @@ public class Product implements Serializable {
     public void setReviewArrayList(ArrayList<Review> reviewArrayList) {
         this.reviewArrayList = reviewArrayList;
     }
+
     @Override
     public String toString() {
         return "Product{" +
                 "productId='" + productId + '\'' +
                 ", name='" + name + '\'' +
                 ", category='" + category + '\'' +
-                ", brand='" + manufacturer + '\'' +
-                ", price='" + price + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
                 ", color='" + color + '\'' +
                 ", stock='" + stock + '\'' +
                 ", photoUrl='" + photoUrl + '\'' +
                 ", description='" + description + '\'' +
+                ", quantityInCart=" + quantityInCart +
+                ", price=" + price +
+                ", avgStarRating=" + avgStarRating +
+                ", reviewArrayList=" + reviewArrayList +
                 '}';
     }
 }

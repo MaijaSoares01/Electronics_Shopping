@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -273,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         if (id == R.id.nav_orders) {
             Intent intent = new Intent(getApplicationContext(), CustomersOrders.class);
-            intent.putExtra("type","user");
+            intent.putExtra("type","User");
             startActivity(intent);
         }
         else if (id == R.id.nav_logout) {
@@ -309,41 +310,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void getProfileData() {
-
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId);
-        UsersRef.addValueEventListener(new ValueEventListener() {
+        FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    User user=new User();
-                    user=dataSnapshot.getValue(User.class);
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId);
+                    UsersRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                User user=new User();
+                                user=dataSnapshot.getValue(User.class);
 
-                    if(user!=null){
-                        Log.d("usertest",user.getPhotoUrl());
-                    }
-                    else{
-                        Log.d("usertest",user.toString());
-                    }
-                    String image = dataSnapshot.child("photoUrl").getValue().toString();
-                    String name = dataSnapshot.child("name").getValue().toString();
+                                if(user!=null){
+                                    Log.d("usertest",user.getPhotoUrl());
+                                }
+                                else{
+                                    Log.d("usertest",user.toString());
+                                }
+                                String image = dataSnapshot.child("photoUrl").getValue().toString();
+                                String name = dataSnapshot.child("name").getValue().toString();
 //                    Email = dataSnapshot.child("email").getValue().toString();
 //                    Password = dataSnapshot.child("pass").getValue().toString();
-                    try {
-                        if (image != null && !image.equals("")) {
-                            Picasso.get().load(image).placeholder(R.drawable.profile).into(UserProfileImg);
+                                try {
+                                    if (image != null && !image.equals("")) {
+                                        Picasso.get().load(image).placeholder(R.drawable.profile).into(UserProfileImg);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                UserNameDrawer.setText(name);
+                            }
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
 
-                    UserNameDrawer.setText(name);
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }

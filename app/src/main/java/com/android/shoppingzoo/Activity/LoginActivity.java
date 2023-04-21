@@ -66,6 +66,24 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         initAll();
         settingUpListeners();
+        mPrefs = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
+        getPreferencesData();
+    }
+
+    private void getPreferencesData() {
+        SharedPreferences sp = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
+        if(sp.contains("pref_email")){
+            String spEmail = sp.getString("pref_email","not found");
+            email.setText(spEmail.toString());
+        }
+        if(sp.contains("pref_password")){
+            String spPassword = sp.getString("pref_password","not found");
+            pass.setText(spPassword.toString());
+        }
+        if(sp.contains("pref_check")){
+            Boolean spCheck = sp.getBoolean("pref_check",false);
+            rememberCheckBox.setChecked(spCheck);
+        }
     }
 
 
@@ -141,24 +159,10 @@ public class LoginActivity extends AppCompatActivity {
                     error = true;
                 }else if(!userPass.isEmpty()){
                     passwordError.setError(null);
-                    if(!isValidPassword(userPass)){
-                        passwordError.setError("Password not valid");
-                        error = true;
-                        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(LoginActivity.this);
-                        builder.setTitle("Password Rules");
-                        LayoutInflater inflater = LoginActivity.this.getLayoutInflater();
-                        builder.setView(inflater.inflate(R.layout.password_popup, null))
-                                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                        builder.create();
-                    }
                 }
                 if(error == false){
                     progressBar.setVisibility(View.VISIBLE);
-                    login_btn.setVisibility(View.GONE);
+                    login_btn.setVisibility(View.INVISIBLE);
 
                     mAuth.signInWithEmailAndPassword(userEmail, userPass)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -208,9 +212,8 @@ public class LoginActivity extends AppCompatActivity {
                                         progressBar.setVisibility(View.GONE);
                                         login_btn.setEnabled(true);
                                         login_btn.setVisibility(View.VISIBLE);
-                                        Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                                Toast.LENGTH_SHORT).show();
-
+                                        Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
@@ -231,25 +234,6 @@ public class LoginActivity extends AppCompatActivity {
                     Boolean spCheck = sp.getBoolean("pref_check",false);
                     rememberCheckBox.setChecked(spCheck);
                 }
-            }
-
-            public boolean isValidPassword(final String password) {
-                Pattern pattern;
-                Matcher matcher;
-                final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";
-                pattern = Pattern.compile(PASSWORD_PATTERN);
-                matcher = pattern.matcher(password);
-                return matcher.matches();
-                /*
-                ^                 # start-of-string
-                (?=.*[0-9])       # A digit must occur at least once
-                (?=.*[a-z])       # A lower case letter must occur at least once
-                (?=.*[A-Z])       # An upper case letter must occur at least once
-                (?=.*[@#$%^&+=_*])  # A special character must occur at least once
-                (?=\\S+$)         # No whitespace allowed in the entire string
-                .{6,}             # At least 6 characters
-                $                 # end-of-string
-                */
             }
         });
 
@@ -283,7 +267,7 @@ public class LoginActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         progressBar.setVisibility(View.GONE);
                                         verifyBtn.setVisibility(View.VISIBLE);
-                                        Log.d("testPassrest", "successfull");
+                                        Log.d("testPassrest", "successful");
                                         Toast.makeText(LoginActivity.this, "Email Has Been Sent", Toast.LENGTH_SHORT).show();
                                         alertDialog.dismiss();
                                     } else {
@@ -310,7 +294,6 @@ public class LoginActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
-
     }
 
 
@@ -321,8 +304,8 @@ public class LoginActivity extends AppCompatActivity {
         login_btn = findViewById(R.id.login_btn);
         adminLogin = findViewById(R.id.manager_portal_btn);
         loginResultTv = findViewById(R.id.login_results);
-        emailError = findViewById(R.id.discountInputLayout);
-        passwordError = findViewById(R.id.passwordInputLayout);
+        emailError = findViewById(R.id.emailInputLayoutUser);
+        passwordError = findViewById(R.id.passwordInputLayoutUser);
         rememberCheckBox = findViewById(R.id.rememberCheckBox);
         didNotHaveAcc = findViewById(R.id.registerText);
         progressBar = findViewById(R.id.login_progress_bar);

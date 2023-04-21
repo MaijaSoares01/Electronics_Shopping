@@ -47,7 +47,7 @@ public class NewProductActivity extends AppCompatActivity {
     ImageView uploadPhotoBtn, productImg;
     Button addBtn;
     private String downloadImageUrl = "";
-    private EditText nameEt,priceEt,colorEt,stockEt,descriptionEt;
+    private EditText name,manufacturer,colour,stock,price,description;
     private ProgressBar progressBar;
     Product product;
 
@@ -62,12 +62,10 @@ public class NewProductActivity extends AppCompatActivity {
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(categoryAdapter);
 
-        SettingClickListners();
-
-
+        SettingClickListeners();
     }
 
-    private void SettingClickListners() {
+    private void SettingClickListeners() {
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -82,59 +80,62 @@ public class NewProductActivity extends AppCompatActivity {
         uploadPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST);
-
             }
         });
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name=nameEt.getText().toString().trim();
-                String price=priceEt.getText().toString().trim();
-                String color=colorEt.getText().toString().trim();
-                String stock=stockEt.getText().toString().trim();
-                String desc=descriptionEt.getText().toString().trim();
+                String nameSt=name.getText().toString().trim();
+                String manufacturerSt=manufacturer.getText().toString().trim();
+                String colourSt=colour.getText().toString().trim();
+                String stockSt=stock.getText().toString().trim();
+                String priceSt=price.getText().toString().trim();
+                String descriptionSt=description.getText().toString().trim();
                 if(filePath==null){
-                    Toast.makeText(NewProductActivity.this, "Please select product image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewProductActivity.this, "Please select Product Image", Toast.LENGTH_SHORT).show();
                 }
-                else if(TextUtils.isEmpty(name)){
-                    nameEt.setError("Enter product name");
-                    nameEt.requestFocus();
+                else if(TextUtils.isEmpty(nameSt)){
+                    name.setError("Enter Product Name");
+                    name.requestFocus();
                 }
                 else if(category.equals("Select Category")){
-                    Toast.makeText(NewProductActivity.this, "Select category", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewProductActivity.this, "Select Category", Toast.LENGTH_SHORT).show();
                 }
-                else if(TextUtils.isEmpty(price)){
-                    priceEt.setError("Enter product price");
-                    priceEt.requestFocus();
+                else if(TextUtils.isEmpty(manufacturerSt)){
+                    manufacturer.setError("Enter Manufacturer");
+                    manufacturer.requestFocus();
                 }
-                else if(TextUtils.isEmpty(color)){
-                    colorEt.setError("Enter product color");
-                    colorEt.requestFocus();
+                else if(TextUtils.isEmpty(colourSt)){
+                    colour.setError("Enter Product Colour");
+                    colour.requestFocus();
                 }
-                else if(TextUtils.isEmpty(stock)){
-                    stockEt.setError("Enter product stock");
-                    stockEt.requestFocus();
+                else if(TextUtils.isEmpty(stockSt)){
+                    stock.setError("Enter Product Stock");
+                    stock.requestFocus();
                 }
-                else if(TextUtils.isEmpty(desc)){
-                    descriptionEt.setError("Enter product description");
-                    descriptionEt.requestFocus();
+                else if(TextUtils.isEmpty(priceSt)){
+                    price.setError("Enter Product Price");
+                    price.requestFocus();
+                }
+                else if(TextUtils.isEmpty(descriptionSt)){
+                    description.setError("Enter Product Description");
+                    description.requestFocus();
                 }
                 else{
-                    product.setName(name);
+                    product.setName(nameSt);
                     product.setCategory(category);
-                    product.setPrice(Double.parseDouble(price));
-                    product.setColor(color);
-                    product.setStock(stock);
-                    product.setDescription(desc);
+                    product.setManufacturer(manufacturerSt);
+                    product.setColor(colourSt);
+                    product.setStock(stockSt);
+                    product.setDescription(descriptionSt);
+                    product.setPrice(Double.parseDouble(priceSt));
                     UploadImage();
                 }
-
             }
         });
     }
@@ -147,11 +148,12 @@ public class NewProductActivity extends AppCompatActivity {
         productImg = findViewById(R.id.product_image);
         addBtn = findViewById(R.id.add_btn);
 
-        nameEt=findViewById(R.id.product_name_et);
-        priceEt=findViewById(R.id.price_et);
-        colorEt=findViewById(R.id.color_et);
-        stockEt=findViewById(R.id.stock_et);
-        descriptionEt=findViewById(R.id.description_tv);
+        name=findViewById(R.id.product_name);
+        manufacturer=findViewById(R.id.manufacturer);
+        colour=findViewById(R.id.colour);
+        stock=findViewById(R.id.stock);
+        price=findViewById(R.id.price);
+        description=findViewById(R.id.description);
 
         storageRef = FirebaseStorage.getInstance().getReference();
         myRootRef = FirebaseDatabase.getInstance().getReference();
@@ -208,7 +210,7 @@ public class NewProductActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Uri> task) {
                             if (task.isSuccessful()) {
                                 downloadImageUrl = task.getResult().toString();
-                                Log.d("imagUrl", downloadImageUrl);
+                                Log.d("imageUrl", downloadImageUrl);
                                 product.setPhotoUrl(downloadImageUrl);
                                 SaveInfoToDatabase();
                             }
@@ -218,7 +220,7 @@ public class NewProductActivity extends AppCompatActivity {
             });
 
         } else {
-            Toast.makeText(NewProductActivity.this, "Select an image", Toast.LENGTH_SHORT).show();
+            Toast.makeText(NewProductActivity.this, "Select an Image", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -229,9 +231,9 @@ public class NewProductActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(NewProductActivity.this, "Product uploaded Successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewProductActivity.this, "Product Uploaded Successfully", Toast.LENGTH_SHORT).show();
                 finish();
-                Log.d("TAG", "Saved to firebase");
+                Log.d("TAG", "Saved to Firebase");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

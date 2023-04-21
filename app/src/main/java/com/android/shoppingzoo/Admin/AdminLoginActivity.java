@@ -3,20 +3,26 @@ package com.android.shoppingzoo.Admin;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.shoppingzoo.Activity.LoginActivity;
+import com.android.shoppingzoo.Activity.SignupUserActivity;
 import com.android.shoppingzoo.Activity.SplashScreen;
 import com.android.shoppingzoo.Model.Utils;
 import com.android.shoppingzoo.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,13 +36,14 @@ import io.paperdb.Paper;
 public class AdminLoginActivity extends AppCompatActivity {
 
     private static final String TAG = "AdminsigninTag";
+    private TextInputEditText email, pass;
+    private TextInputLayout emailError, passwordError;
     String userEmail, userPass;
-    private EditText email, pass;
     private Button loginBtn;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private DatabaseReference myRootRef;
-
+    private ImageView backimage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,27 +52,38 @@ public class AdminLoginActivity extends AppCompatActivity {
 
         Paper.init(AdminLoginActivity.this);
         initAll();
-        settingUpListners();
+        settingUpListeners();
     }
 
-    private void settingUpListners() {
+    private void settingUpListeners() {
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 userEmail = email.getText().toString().trim();
                 userPass = pass.getText().toString().trim();
-                if (TextUtils.isEmpty(userEmail)) {
-                    email.setError("enter email");
-                    email.requestFocus();
-                } else if (TextUtils.isEmpty(userPass)) {
-                    pass.setError("enter pass");
-                    pass.requestFocus();
-                } else {
-                    //call the signin funtion here
+                boolean error = false;
+                if (userEmail.isEmpty()) {
+                    emailError.setError("Email Required");
+                    error = true;
+                }else if(!userEmail.isEmpty()) {
+                    emailError.setError(null);
+                    if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+                        emailError.setError("Email not valid e.g. example@mail.com");
+                        error = true;
+                    }else if (Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+                        emailError.setError(null);
+                    }
+                }
+                if(userPass.isEmpty()){
+                    passwordError.setError("Password Required");
+                    error = true;
+                }else if(!userPass.isEmpty()){
+                    passwordError.setError(null);
+                }
+                if(error == false){
                     progressBar.setVisibility(View.VISIBLE);
-                    loginBtn.setVisibility(View.GONE);
-                    //Check authentication by using email and password
+                    loginBtn.setVisibility(View.INVISIBLE);
 
                     mAuth.signInWithEmailAndPassword(userEmail, userPass)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -76,9 +94,10 @@ public class AdminLoginActivity extends AppCompatActivity {
                                         myRootRef.child("Admin").child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                //place data in datasnapshot that we can show
                                                 if (dataSnapshot.exists()) {
                                                     progressBar.setVisibility(View.GONE);
+                                                    loginBtn.setEnabled(true);
+                                                    loginBtn.setVisibility(View.VISIBLE);
                                                     Paper.book().write("active","admin");
                                                     Intent intent = new Intent(AdminLoginActivity.this, AdminHome.class);
                                                     Toast.makeText(AdminLoginActivity.this, "Welcome Admin", Toast.LENGTH_SHORT).show();
@@ -87,9 +106,10 @@ public class AdminLoginActivity extends AppCompatActivity {
                                                 } else {
                                                     mAuth.signOut();
                                                     Toast.makeText(AdminLoginActivity.this, "This is not Admin login details", Toast.LENGTH_SHORT).show();
-                                                    progressBar.setVisibility(View.INVISIBLE);
+                                                    progressBar.setVisibility(View.GONE);
+                                                    loginBtn.setEnabled(true);
+                                                    loginBtn.setVisibility(View.VISIBLE);
                                                 }
-
                                             }
 
                                             @Override
@@ -98,19 +118,22 @@ public class AdminLoginActivity extends AppCompatActivity {
                                             }
                                         });
                                     } else {
-                                        //sign in Failed
-                                        //setting progree bar
                                         progressBar.setVisibility(View.GONE);
                                         loginBtn.setEnabled(true);
                                         loginBtn.setVisibility(View.VISIBLE);
-                                        //show message
-                                        Toast.makeText(AdminLoginActivity.this, "Authentication failed.",
-                                                Toast.LENGTH_SHORT).show();
-
+                                        Toast.makeText(AdminLoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(AdminLoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
                 }
+            }
+        });
+
+        backimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }
@@ -119,9 +142,11 @@ public class AdminLoginActivity extends AppCompatActivity {
         email = findViewById(R.id.login_email);
         pass = findViewById(R.id.login_pass);
         loginBtn = findViewById(R.id.login_btn);
-
         progressBar = findViewById(R.id.login_progress_bar);
         progressBar.setVisibility(View.GONE);
+        backimage = findViewById(R.id.backimage);
+        emailError = findViewById(R.id.emailInputLayoutAdmin);
+        passwordError = findViewById(R.id.passwordInputLayoutAdmin);
 
         mAuth = FirebaseAuth.getInstance();
         myRootRef = FirebaseDatabase.getInstance().getReference();

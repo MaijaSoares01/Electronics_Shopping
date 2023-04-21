@@ -28,7 +28,7 @@ import io.paperdb.Paper;
 public class AdminHome extends AppCompatActivity {
 
     int counter = 0;
-    private RelativeLayout logoutBtn, newProduct, viewProduct, viewCustomersOrders;
+    private RelativeLayout logoutBtn, newProduct, viewProduct, viewCustomers, viewCustomersOrders, newDiscount, viewDiscounts;
     private FirebaseAuth mAuth;
     DatabaseReference myRootRef;
     private TextView orderCount;
@@ -64,6 +64,14 @@ public class AdminHome extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AdminHome.this, ViewAllProductsActivity.class);
+                intent.putExtra("type", "Admin");
+                startActivity(intent);
+            }
+        });
+        viewCustomers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminHome.this, ViewAllCustomersActivity.class);
                 startActivity(intent);
             }
         });
@@ -71,7 +79,21 @@ public class AdminHome extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AdminHome.this, CustomersOrders.class);
-                intent.putExtra("type", "admin");
+                intent.putExtra("type", "Admin");
+                startActivity(intent);
+            }
+        });
+        newDiscount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminHome.this, NewDiscountActivity.class);
+                startActivity(intent);
+            }
+        });
+        viewDiscounts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminHome.this, ViewAllDiscountsActivity.class);
                 startActivity(intent);
             }
         });
@@ -84,7 +106,7 @@ public class AdminHome extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    Log.d("Testchildcound", dataSnapshot.getChildrenCount() + "");
+                    Log.d("Testchildcount", dataSnapshot.getChildrenCount() + "");
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         String id = child.getKey();
                         getOrders(id);
@@ -131,7 +153,10 @@ public class AdminHome extends AppCompatActivity {
         viewProduct = findViewById(R.id.view_all_products);
         orderCount = findViewById(R.id.orders_count);
         countProgressBar = findViewById(R.id.order_count_progress);
+        viewCustomers = findViewById(R.id.view_all_customers);
         viewCustomersOrders = findViewById(R.id.view_customer_order);
+        newDiscount = findViewById(R.id.new_discount_layout);
+        viewDiscounts = findViewById(R.id.view_all_discounts);
         myRootRef = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         Utils.statusBarColor(AdminHome.this);

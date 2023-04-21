@@ -114,7 +114,7 @@
                     android:padding="16dp">
 
                     <ImageView
-                        android:id="@+id/maps"
+                        android:id="@+id/productsImage"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_centerVertical="true"
@@ -141,6 +141,40 @@
                 app:cardElevation="10dp">
 
                 <RelativeLayout
+                    android:id="@+id/view_all_customers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/customersImage"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/customerlist" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:text="View All Customers"
+                        android:textColor="#6f6f6f"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="10dp">
+
+                <RelativeLayout
                     android:id="@+id/view_customer_order"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -148,7 +182,7 @@
                     android:padding="16dp">
 
                     <ImageView
-                        android:id="@+id/orders"
+                        android:id="@+id/ordersImage"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_centerVertical="true"
@@ -202,7 +236,7 @@
                 app:cardElevation="10dp">
 
                 <RelativeLayout
-                    android:id="@+id/discount_layout"
+                    android:id="@+id/new_discount_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -221,6 +255,39 @@
                         android:layout_centerInParent="true"
                         android:gravity="center"
                         android:text="Add New Discount"
+                        android:textColor="#6f6f6f"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="10dp">
+
+                <RelativeLayout
+                    android:id="@+id/view_all_discounts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/discountlist" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:text="View All Discounts"
                         android:textColor="#6f6f6f"
                         android:textSize="18sp"
                         android:textStyle="bold" />

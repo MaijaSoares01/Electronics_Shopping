@@ -14,6 +14,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EasyShopping">
         <activity
+            android:name=".Activity.EditProductActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity android:name=".Admin.ViewAllDiscountsActivity" />
+        <activity android:name=".Admin.NewDiscountActivity" />
+        <activity android:name=".Admin.ViewAllCustomersActivity" />
+        <activity
             android:name=".Activity.SearchFiltersActivity"
             android:exported="true" />
         <activity
@@ -36,7 +46,8 @@
         <activity android:name=".Admin.AdminHome" />
         <activity android:name=".Admin.AdminLoginActivity" />
         <activity android:name=".Activity.EventLocationActivity" />
-        <activity android:name=".Activity.SplashScreen"
+        <activity
+            android:name=".Activity.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

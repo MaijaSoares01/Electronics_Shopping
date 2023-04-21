@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.android.shoppingzoo.Adapter.OrdersAdapter;
 import com.android.shoppingzoo.Model.Order;
-import com.android.shoppingzoo.Model.Product;
 import com.android.shoppingzoo.Model.Utils;
 import com.android.shoppingzoo.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,7 +30,7 @@ public class CustomersOrders extends AppCompatActivity {
     private OrdersAdapter mAdapter;
     private RecyclerView recyclerView;
     private ArrayList<Order> orderArrayList;
-
+    private OrdersAdapter ordersAdapter= new OrdersAdapter();
     DatabaseReference myRootRef;
     private ProgressBar progressBar;
     private TextView noJokeText;
@@ -43,12 +42,11 @@ public class CustomersOrders extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customers_orders);
-
         initAll();
         Intent intent = getIntent();
         type = intent.getStringExtra("type");
 
-        if (type.equals("user")) {
+        if (type.equals("User")) {
             getUserOrders();
         } else {
             getAdminOrders();
@@ -61,7 +59,7 @@ public class CustomersOrders extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    Log.d("Testchildcound",dataSnapshot.getChildrenCount()+"");
+                    Log.d("Testchildcount",dataSnapshot.getChildrenCount()+"");
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         String id=child.getKey();
                         getOrders(id);
@@ -91,7 +89,7 @@ public class CustomersOrders extends AppCompatActivity {
                         orderArrayList.add(order);
                         counter[0]++;
                         if (counter[0] == dataSnapshot.getChildrenCount()) {
-                            setData();
+                            setData(true);
                         }
                         Log.d("ShowEventInfo:", order.toString());
                     }
@@ -117,7 +115,7 @@ public class CustomersOrders extends AppCompatActivity {
                         orderArrayList.add(order);
                         counter[0]++;
                         if (counter[0] == dataSnapshot.getChildrenCount()) {
-                            setData();
+                            setData(false);
                             progressBar.setVisibility(View.GONE);
                         }
                         Log.d("ShowEventInfo:", order.toString());
@@ -136,10 +134,10 @@ public class CustomersOrders extends AppCompatActivity {
 
     }
 
-    private void setData() {
+    private void setData(boolean typeUser) {
         progressBar.setVisibility(View.GONE);
         if (orderArrayList.size() > 0) {
-            mAdapter = new OrdersAdapter(CustomersOrders.this, orderArrayList);
+            mAdapter = new OrdersAdapter(CustomersOrders.this, orderArrayList,typeUser);
             recyclerView.setNestedScrollingEnabled(false);
             recyclerView.setLayoutManager(new LinearLayoutManager(CustomersOrders.this));
             recyclerView.setAdapter(mAdapter);

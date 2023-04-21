@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -35,8 +38,9 @@ public class SignupUserActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     DatabaseReference myRootRef;
     String userName, userEmail, userPass,userAddress;
-    private EditText name, email, pass,address;
+    private TextInputEditText name, email, pass,address;
     private Button SignUPBtn, GoToLoginBtn;
+    private TextInputLayout nameError, emailError, passwordError, addressError;
     private ProgressBar progressBar;
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private int selectedGender=1;
@@ -48,24 +52,10 @@ public class SignupUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup_user);
 
         initAll();
-        settingUpListners();
+        settingUpListeners();
     }
 
-    private void settingUpListners() {
-        /*radioGroupGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch(checkedId){
-                    case R.id.male_radio:
-                        selectedGender=1;
-                        break;
-                    case R.id.female_radio:
-                        selectedGender=0;
-                        break;
-                }
-            }
-        });*/
-
+    private void settingUpListeners() {
         GoToLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,21 +71,39 @@ public class SignupUserActivity extends AppCompatActivity {
                 userPass = pass.getText().toString().trim();
                 userAddress = address.getText().toString().trim();
 
-                if (TextUtils.isEmpty(userName)) {
-                    name.setError("Enter Full name");
-                } else if (TextUtils.isEmpty(userEmail)) {
-                    email.setError("Enter email");
+                boolean error = false;
+
+                if (userName.isEmpty()) {
+                    nameError.setError("Full Name required");
+                    error = true;
+                } else if (!userName.isEmpty()) {
+                    nameError.setError(null);
                 }
-                else if (!userEmail.matches(emailPattern)) {
-                    Toast.makeText(getApplicationContext(), "Invalid email address, enter valid email id", Toast.LENGTH_SHORT).show();
+                if (userPass.isEmpty()) {
+                    passwordError.setError("Password required");
+                    error = true;
+                } else if (!userPass.isEmpty()) {
+                    passwordError.setError(null);
                 }
-                else if (TextUtils.isEmpty(userPass)) {
-                    pass.setError("Enter pass");
+                if (userEmail.isEmpty()) {
+                    emailError.setError("Email required");
+                    error = true;
+                } else if (!userEmail.isEmpty()) {
+                    emailError.setError(null);
+                    if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+                        emailError.setError("Email not valid e.g. example@mail.com");
+                        error = true;
+                    } else if (Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+                        emailError.setError(null);
+                    }
                 }
-                else if (TextUtils.isEmpty(userAddress)) {
-                    address.setError("Enter your address");
+                if (userAddress.isEmpty()) {
+                    addressError.setError("Address required");
+                    error = true;
+                } else if (!userAddress.isEmpty()) {
+                    addressError.setError(null);
                 }
-                else {
+                if(!error){
                     //signup code goes here
                     RegisterNewAccount();
                 }
@@ -144,28 +152,28 @@ public class SignupUserActivity extends AppCompatActivity {
                                 }
                             });
                         } else {
-                            Toast.makeText(SignupUserActivity.this, "Failed to Create Account..!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignupUserActivity.this, "Failed to Create Account..", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignupUserActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
-
     }
 
     private void initAll() {
-        //casting
         name = findViewById(R.id.signup_username);
         email = findViewById(R.id.signup_email);
         pass = findViewById(R.id.signup_pass);
+        nameError = (TextInputLayout)findViewById(R.id.nameInputLayoutReg);
+        passwordError = (TextInputLayout)findViewById(R.id.passwordInputLayoutReg);
+        emailError = (TextInputLayout)findViewById(R.id.emailInputLayoutReg);
+        addressError = (TextInputLayout)findViewById(R.id.addressInputLayoutReg);
+
         progressBar = findViewById(R.id.signup_progressbar);
         SignUPBtn = findViewById(R.id.signup_btn);
         GoToLoginBtn = findViewById(R.id.already_have_account_btn);
         address = findViewById(R.id.location_et);
-        //radioGroupGender = (RadioGroup) findViewById(R.id.radioGroup1);
-        //initialize mauth
         mAuth = FirebaseAuth.getInstance();
-        //getting path
         myRootRef = FirebaseDatabase.getInstance().getReference();
-        //initialize function
         user = new User();
 
         Utils.statusBarColor(SignupUserActivity.this);

@@ -19,6 +19,7 @@ import com.android.shoppingzoo.R;
 
 public class SearchFiltersActivity extends AppCompatActivity implements View.OnClickListener {
     TextView clearFilters,sort_by_text;
+    CardView search_name, search_manufacturer, search_category;
     CardView cat_mobile,cat_wearables,cat_laptops,cat_tv,cat_monitor,cat_computers,cat_appliances,cat_printers,cat_console,cat_other;
     CardView sort_ascending, sort_descending, sort_none;
     CardView sort_name, sort_price, sort_manufacturer, sort_starRating;
@@ -34,7 +35,10 @@ public class SearchFiltersActivity extends AppCompatActivity implements View.OnC
 
         clearFilters.setOnClickListener(this);
 
-
+        //SearchBy
+        search_name.setOnClickListener(this);
+        search_manufacturer.setOnClickListener(this);
+        search_category.setOnClickListener(this);
         //Sort
         sort_ascending.setOnClickListener(this);
         sort_descending.setOnClickListener(this);
@@ -58,6 +62,10 @@ public class SearchFiltersActivity extends AppCompatActivity implements View.OnC
     }
 
     private void initAll() {
+        //SearchBy
+        search_name = findViewById(R.id.search_name);
+        search_manufacturer = findViewById(R.id.search_manufacturer);
+        search_category = findViewById(R.id.search_category);
         //Sort
         sort_ascending = findViewById(R.id.sort_ascending);
         sort_descending = findViewById(R.id.sort_descending);
@@ -94,6 +102,30 @@ public class SearchFiltersActivity extends AppCompatActivity implements View.OnC
         int id = view.getId();
 
         switch (id) {
+            case R.id.search_name:
+                HomeFragment.search = "Name";
+                search_name.setCardBackgroundColor(ContextCompat.getColor(this, R.color.selectedFilter));
+                search_manufacturer.setCardBackgroundColor(ContextCompat.getColor(this, R.color.white));
+                search_category.setCardBackgroundColor(ContextCompat.getColor(this, R.color.white));
+                HomeFragment.isSearchSelected = true;
+                HomeFragment.isFiltersApplied = true;
+                break;
+            case R.id.search_manufacturer:
+                HomeFragment.search = "Manufacturer";
+                search_manufacturer.setCardBackgroundColor(ContextCompat.getColor(this, R.color.selectedFilter));
+                search_name.setCardBackgroundColor(ContextCompat.getColor(this, R.color.white));
+                search_category.setCardBackgroundColor(ContextCompat.getColor(this, R.color.white));
+                HomeFragment.isSearchSelected = true;
+                HomeFragment.isFiltersApplied = true;
+                break;
+            case R.id.search_category:
+                HomeFragment.search = "Category";
+                search_category.setCardBackgroundColor(ContextCompat.getColor(this, R.color.selectedFilter));
+                search_name.setCardBackgroundColor(ContextCompat.getColor(this, R.color.white));
+                search_manufacturer.setCardBackgroundColor(ContextCompat.getColor(this, R.color.white));
+                HomeFragment.isSearchSelected = true;
+                HomeFragment.isFiltersApplied = true;
+                break;
             case R.id.sort_ascending:
                 HomeFragment.sort = "Ascending";
                 sort_ascending.setCardBackgroundColor(ContextCompat.getColor(this, R.color.selectedFilter));

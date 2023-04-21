@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/price_tv"
-                android:text="$15"
+                android:text="€15"
                 android:layout_weight="5"
                 android:textColor="@color/black"
                 android:fontFamily="@font/crimson_text_semibold"

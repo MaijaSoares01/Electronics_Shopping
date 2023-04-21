@@ -74,8 +74,9 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:layout_height="wrap_content">
+
             <EditText
-                android:id="@+id/product_name_et"
+                android:id="@+id/product_name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Product name"
@@ -87,6 +88,7 @@
                 android:singleLine="true"
                 android:textSize="16sp"
                 android:textColorHint="@color/text_color" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
@@ -105,96 +107,39 @@
                         />
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:visibility="visible"
-                android:layout_marginTop="15dp"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:background="@drawable/text_input_bg"
-                    android:layout_height="wrap_content">
-                    <Spinner
-                        android:id="@+id/product_brand_Spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_margin="1dp"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:visibility="visible"
-                android:layout_marginTop="15dp"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:background="@drawable/text_input_bg"
-                    android:layout_height="wrap_content">
-                    <Spinner
-                        android:id="@+id/product_size_type_Spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_margin="1dp"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/top_size_layout"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginTop="15dp"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:background="@drawable/text_input_bg"
-                    android:layout_height="wrap_content">
-                    <Spinner
-                        android:id="@+id/product_size_Spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_margin="1dp"
-                        />
-                </LinearLayout>
-            </LinearLayout>
 
             <EditText
-                android:id="@+id/price_et"
+                android:id="@+id/manufacturer"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:drawableLeft="@drawable/ic_dollar_currency"
-                android:drawablePadding="10dp"
-                android:hint="Product Price"
                 android:layout_marginTop="15dp"
-                android:inputType="numberDecimal"
                 android:background="@drawable/text_input_bg"
-                android:paddingStart="10dp"
-                android:textSize="16sp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:singleLine="true"
-                android:textColorHint="@color/text_color" />
-
-            <EditText
-                android:id="@+id/color_et"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Product Color"
-                android:layout_marginTop="15dp"
-                android:inputType="textPersonName"
-                android:background="@drawable/text_input_bg"
+                android:hint="Manufacturer"
+                android:inputType="text"
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:textSize="16sp"
                 android:singleLine="true"
-                android:textColorHint="@color/text_color" />
+                android:textColorHint="@color/text_color"
+                android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/stock_et"
+                android:id="@+id/colour"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/text_input_bg"
+                android:hint="Product Colour"
+                android:inputType="text"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:textColorHint="@color/text_color"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/stock"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Available stock"
@@ -208,6 +153,26 @@
                 android:textSize="16sp"
                 android:textColorHint="@color/text_color" />
 
+
+            <EditText
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:drawableLeft="@drawable/ic_euro"
+                android:drawablePadding="10dp"
+                android:hint="Product Price"
+                android:layout_marginTop="15dp"
+                android:inputType="numberDecimal"
+                android:background="@drawable/text_input_bg"
+                android:paddingStart="10dp"
+                android:textSize="16sp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:textColorHint="@color/text_color" />
+
+
+
             <TextView
                 android:text="Description"
                 android:textColor="@color/black"
@@ -220,7 +185,7 @@
                     android:background="@drawable/text_input_bg"
                     android:layout_height="wrap_content">
                     <EditText
-                        android:id="@+id/description_tv"
+                        android:id="@+id/description"
                         android:hint="Type here"
                         android:textColor="@color/black"
                         android:gravity="start|top"

@@ -73,11 +73,13 @@ tools:context=".Activity.LoginActivity">
     app:layout_constraintTop_toBottomOf="@+id/helloText" />
 
 <com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/discountInputLayout"
+    android:id="@+id/emailInputLayoutUser"
     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="30dp"
+    app:boxBackgroundColor="@android:color/white"
+    android:background="@android:color/transparent"
     app:boxCornerRadiusBottomEnd="8dp"
     app:boxCornerRadiusBottomStart="8dp"
     app:boxCornerRadiusTopEnd="8dp"
@@ -93,7 +95,6 @@ tools:context=".Activity.LoginActivity">
         android:id="@+id/login_email"
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:drawableStart="@drawable/ic_email"
         android:drawablePadding="12dp"
         android:ems="10"
@@ -102,11 +103,13 @@ tools:context=".Activity.LoginActivity">
 </com.google.android.material.textfield.TextInputLayout>
 
 <com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/passwordInputLayout"
+    android:id="@+id/passwordInputLayoutUser"
     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
+    app:boxBackgroundColor="@android:color/white"
+    android:background="@android:color/transparent"
     app:boxCornerRadiusBottomEnd="8dp"
     app:boxCornerRadiusBottomStart="8dp"
     app:boxCornerRadiusTopEnd="8dp"
@@ -116,14 +119,13 @@ tools:context=".Activity.LoginActivity">
     app:errorTextColor="@color/white"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/discountInputLayout"
+    app:layout_constraintTop_toBottomOf="@+id/emailInputLayoutUser"
     app:passwordToggleEnabled="true">
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/login_pass"
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:drawableStart="@drawable/ic_password"
         android:drawablePadding="12dp"
         android:hint="Password *"
@@ -139,8 +141,8 @@ tools:context=".Activity.LoginActivity">
     android:text="Forget your password?"
     android:textAppearance="@style/TextAppearance.AppCompat.Small"
     android:textColor="@color/white"
-    app:layout_constraintEnd_toEndOf="@+id/passwordInputLayout"
-    app:layout_constraintTop_toBottomOf="@+id/passwordInputLayout" />
+    app:layout_constraintEnd_toEndOf="@+id/passwordInputLayoutUser"
+    app:layout_constraintTop_toBottomOf="@+id/passwordInputLayoutUser" />
 
 <TextView
     android:id="@+id/login_results"
@@ -224,7 +226,7 @@ tools:context=".Activity.LoginActivity">
     android:text="Remember me"
     android:textAppearance="@style/TextAppearance.AppCompat.Small"
     android:textColor="@color/white"
-    app:layout_constraintStart_toStartOf="@+id/passwordInputLayout"
-    app:layout_constraintTop_toBottomOf="@+id/passwordInputLayout" />
+    app:layout_constraintStart_toStartOf="@+id/passwordInputLayoutUser"
+    app:layout_constraintTop_toBottomOf="@+id/passwordInputLayoutUser" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

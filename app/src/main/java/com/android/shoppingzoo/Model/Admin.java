@@ -2,7 +2,7 @@ package com.android.shoppingzoo.Model;
 
 public class Admin {
 
-    String id,name,email;
+    String id,name,email,type;
 
     public Admin() {
     }
@@ -29,5 +29,13 @@ public class Admin {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

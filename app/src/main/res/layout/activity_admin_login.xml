@@ -7,6 +7,16 @@
     tools:context=".Activity.LoginActivity">
 
     <ImageView
+        android:id="@+id/backimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back_arrow" />
+
+    <ImageView
         android:id="@+id/logInImage"
         android:layout_width="150dp"
         android:layout_height="150dp"
@@ -48,7 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/helloText" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/discountInputLayout"
+        android:id="@+id/emailInputLayoutAdmin"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -76,7 +86,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordInputLayout"
+        android:id="@+id/passwordInputLayoutAdmin"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -90,7 +100,7 @@
         app:errorTextColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/discountInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/emailInputLayoutAdmin"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -129,9 +139,9 @@
         app:icon="@drawable/ic_next"
         app:iconGravity="textEnd"
         app:iconPadding="0dp"
-        app:layout_constraintEnd_toEndOf="@+id/passwordInputLayout"
-        app:layout_constraintStart_toStartOf="@+id/passwordInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/passwordInputLayout"
+        app:layout_constraintEnd_toEndOf="@+id/passwordInputLayoutAdmin"
+        app:layout_constraintStart_toStartOf="@+id/passwordInputLayoutAdmin"
+        app:layout_constraintTop_toBottomOf="@+id/passwordInputLayoutAdmin"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <ProgressBar

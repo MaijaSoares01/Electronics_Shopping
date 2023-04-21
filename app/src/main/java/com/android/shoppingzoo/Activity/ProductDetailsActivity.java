@@ -34,16 +34,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
-
         initAll();
         ClickListeners();
-
         product= (Product) getIntent().getSerializableExtra("product");
-
-
         if(product.getPhotoUrl()!=null){
             if(!product.getPhotoUrl().equals("")){
-                Picasso.get().load(product.getPhotoUrl()).placeholder(R.drawable.electronics_store_logo).into(productImg);
+                Picasso.get().load(product.getPhotoUrl()).placeholder(R.drawable.product).into(productImg);
             }
         }
         productName.setText(product.getName());
@@ -75,23 +71,28 @@ public class ProductDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean isInCart=false;
-                for(int i=0;i<order.getCartProductList().size();i++){
-                    if(product.getProductId().equals(order.getCartProductList().get(i).getProductId())){
-                        isInCart=true;
-                        break;
+                if(Integer.parseInt(product.getStock())<(quantity)){
+                    Toast.makeText(ProductDetailsActivity.this,"Not Enough Stock",Toast.LENGTH_LONG).show();
+                }else{
+                    for(int i=0;i<order.getCartProductList().size();i++){
+                        if(product.getProductId().equals(order.getCartProductList().get(i).getProductId())){
+                            Toast.makeText(ProductDetailsActivity.this,"Already in cart",Toast.LENGTH_LONG).show();
+                            isInCart=true;
+                            break;
+                        }
                     }
-                }
-                if(!isInCart){
-                    product.setQuantityInCart(quantity);
-                    order.addProduct(product);
-                    Log.d("testorder",order.getTotalPrice()+ "");
-                    Paper.book().delete("order");
-                    Paper.book().write("order",order);
-                    Toast.makeText(ProductDetailsActivity.this,"Added to cart",Toast.LENGTH_LONG).show();
-                    finish();
-                }
-                else{
-                    Toast.makeText(ProductDetailsActivity.this,"Already in cart",Toast.LENGTH_LONG).show();
+                    if(!isInCart){
+                        product.setQuantityInCart(quantity);
+                        order.addProduct(product);
+                        Log.d("testorder",order.getTotalPrice()+ "");
+                        Paper.book().delete("order");
+                        Paper.book().write("order",order);
+                        Toast.makeText(ProductDetailsActivity.this,"Added to cart",Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                    else{
+                        Toast.makeText(ProductDetailsActivity.this,"Already in cart",Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });

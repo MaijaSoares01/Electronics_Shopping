@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.shoppingzoo.Activity.EditProductActivity;
 import com.android.shoppingzoo.Activity.ProductDetailsActivity;
 import com.android.shoppingzoo.Model.Product;
 import com.android.shoppingzoo.R;
@@ -31,37 +31,40 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
         this.isAdmin=isAdmin;
     }
 
+    public ProductsAdapter() {
+
+    }
+
     @NonNull
     @Override
     public ProductsAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.single_product_layout, parent, false);
-
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_product_layout, parent, false);
         return new ProductsAdapter.MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductsAdapter.MyViewHolder holder, int position) {
-
         Product product=myJokesList.get(position);
 
         if(product.getPhotoUrl()!=null){
             if(!product.getPhotoUrl().equals("")){
                 holder.productImg.setVisibility(View.VISIBLE);
-                Picasso.get().load(product.getPhotoUrl()).placeholder(R.drawable.electronics_store_logo).into(holder.productImg);
+                Picasso.get().load(product.getPhotoUrl()).placeholder(R.drawable.product).into(holder.productImg);
             }
         }
         holder.name.setText(product.getName());
         holder.price.setText("€"+product.getPrice());
-
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent;
                 if(!isAdmin){
-                    Intent intent=new Intent(context, ProductDetailsActivity.class);
-                    intent.putExtra("product",product);
-                    context.startActivity(intent);
+                    intent = new Intent(context, ProductDetailsActivity.class);
+                }else{
+                    intent = new Intent(context, EditProductActivity.class);
                 }
+                intent.putExtra("product",product);
+                context.startActivity(intent);
             }
         });
     }

@@ -1,30 +1,24 @@
 package com.android.shoppingzoo.Fragment;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.shoppingzoo.Activity.SearchFiltersActivity;
 import com.android.shoppingzoo.Adapter.ProductsAdapter;
@@ -53,11 +47,13 @@ public class HomeFragment extends Fragment {
     private TextView noJokeText;
     private ImageView filtersBtn;
 
+    public static String search = "";
     public static String category = "";
     public static String sort = "";
     public static String sortBy = "";
 
     private static EditText nameInput;
+    public static boolean isSearchSelected = false;
     public static boolean isCategorySelected = false;
     public static boolean isSortSelected = false;
     public static boolean isSortBySelected = false;
@@ -105,12 +101,9 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
 
-        settingClickListners();
-
+        settingClickListeners();
         getDataFromFirebase();
-
         searchFunc();
-
         return view;
     }
 
@@ -123,6 +116,7 @@ public class HomeFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Collections.sort(tempList, Comparator.comparing(Product::getName));
         }
+
         if (isCategorySelected) {
             for (Product element : productArrayList) {
                 if (element.getCategory().equals(category)) {
@@ -205,13 +199,27 @@ public class HomeFragment extends Fragment {
                     }
 
                     mAdapter = new ProductsAdapter(productArrayList, getActivity(), false);
-                    recyclerView.setAdapter(mAdapter);
-                    mAdapter.notifyDataSetChanged();
                 } else {
                     ArrayList<Product> clone = new ArrayList<>();
                     for (Product element : productArrayList) {
-                        if (element.getName().toLowerCase().contains(s.toString().toLowerCase())) {
-                            clone.add(element);
+                        if (isSearchSelected) {
+                            if(search.equals("Name")){
+                                if (element.getName().toLowerCase().contains(s.toString().toLowerCase())) {
+                                    clone.add(element);
+                                }
+                            }else if(search.equals("Category")){
+                                if (element.getCategory().toLowerCase().contains(s.toString().toLowerCase())) {
+                                    clone.add(element);
+                                }
+                            }else if(search.equals("Manufacturer")){
+                                if (element.getManufacturer().toLowerCase().contains(s.toString().toLowerCase())) {
+                                    clone.add(element);
+                                }
+                            }
+                        }else{
+                            if (element.getName().toLowerCase().contains(s.toString().toLowerCase())) {
+                                clone.add(element);
+                            }
                         }
                     }
                     if (clone.size() != 0) {
@@ -223,9 +231,9 @@ public class HomeFragment extends Fragment {
                     }
 
                     mAdapter = new ProductsAdapter(clone, getActivity(), false);
-                    recyclerView.setAdapter(mAdapter);
-                    mAdapter.notifyDataSetChanged();
                 }
+                recyclerView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -235,7 +243,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void settingClickListners() {
+    private void settingClickListeners() {
         filtersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
